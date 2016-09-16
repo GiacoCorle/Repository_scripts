@@ -48,4 +48,3 @@ echo "0."$count
 java -Xmx30g -jar picard.jar DownsampleSam INPUT=/Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/sample_026_Primary_complete.bam  OUTPUT=/Volumes/GIACO/TARGET_SEQ_downsampling/26_N_P_M/Primary_0.$count.bam PROBABILITY=0.$count
  let "count+= 1"
  
-done
