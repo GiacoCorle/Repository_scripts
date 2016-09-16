@@ -1,0 +1,28 @@
+venn.plot <- venn.diagram(
+ x = list(
+ A = c(1:215,216:315,316:718,719:895),
+ B = c(216:315,316:718,896:2741,2742:3291),
+ C = c(316:718,719:895,2741:3290,3292:5204)
+ ),
+ label.col = c("black", "white","black","white","white","white","black"),
+ filename = 'test_Venn_DEG.tiff',
+ output = TRUE,
+ height = 3000,
+ width = 3000,
+ resolution = 300,
+ compression = 'lzw',
+ units = 'px',
+ lwd = 6,
+ lty = 'blank',
+ fill = c('red', 'blue', 'green'),
+ cex = 3.5,
+ fontface = "bold",
+ fontfamily = "sans",
+ cat.cex = 3,
+ cat.fontface = "bold",
+ cat.default.pos = "outer",
+ cat.pos = c(-27, 27, 135),
+ cat.dist = c(0.055, 0.055, 0.085),
+ cat.fontfamily = "sans",
+ rotation = 1
+ )

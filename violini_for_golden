@@ -1,0 +1,84 @@
+#allelic frequencies GOLDEN
+
+Blood_Primary=read.table("/Volumes/SAM_BAM/TARGETED_seq_26012016/mutect/keep/sample_GOLDEN_Blood_vs_Primary.txt")
+Blood_Lesion=read.table("/Volumes/SAM_BAM/TARGETED_seq_26012016/mutect/keep/sample_GOLDEN_Blood_vs_Lesion.txt")
+Blood_Metastatic=read.table("/Volumes/SAM_BAM/TARGETED_seq_26012016/mutect/keep/sample_GOLDEN_Blood_Metastatic.txt")
+
+
+Blood_primary_f=Blood_Primary$V19
+Blood_lesion_f=Blood_Lesion$V19
+Blood_meta_f=Blood_Metastatic$V19
+
+
+pdf(file="allelic_frequencies_GOLDEN.pdf",width=20, heigh=8)
+o=ggplot2.violinplot(data=Blood_primary_f,mainTitle='GOLDEN_Blood_Primary',addMean=TRUE, meanPointShape=23, meanPointSize=1,
+      meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(Blood_primary_f)))    
+      
+d=ggplot2.violinplot(data=Blood_lesion_f,mainTitle='GOLDEN_Blood_Lesion',addMean=TRUE, meanPointShape=23, meanPointSize=1,
+      meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(Blood_lesion_f)))    
+      
+f=ggplot2.violinplot(data=Blood_meta_f,mainTitle='GOLDEN_Blood_Metastatic',addMean=TRUE, meanPointShape=23, meanPointSize=1,
+      meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(Blood_meta_f)))    
+      
+grid.arrange(o,d,f,ncol=3,nrow=1)
+dev.off()
+
+#allelic frequencies Golden_primary_lesion
+
+Primary_lesion=read.table("/Volumes/SAM_BAM/TARGETED_seq_26012016/mutect/keep/intersaction_intrapatient/GOLDEN_primary_lesion.txt")
+Primary_lesion_af=cbind.data.frame(Primary_lesion$V1,Primary_lesion$V2,Primary_lesion$V3,Primary_lesion$V55,Primary_lesion$V19)
+summary(Primary_lesion_af$V4)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.03989 0.14500 0.17900 0.18240 0.21380 0.58330 
+> summary(Primary_lesion_af$V5)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.07407 0.27680 0.31770 0.32510 0.35940 0.66670
+
+Primary_lesion_af$V6=with(Primary_lesion_af, ifelse(V5 > V4, V5/V4, NA))
+golden=na.omit(Primary_lesion_af)
+dim(Primary_lesion_af)
+
+#number in golden is 404!!! more 80% on mutation allelic frequency is going up!!!!!!!!
+#
+
+pdf(file="allelic_frequencies_intersect_positive_ratio in GOLDEN primary_vs_Lesion.pdf",width=10, heigh=10)
+o=ggplot2.violinplot(data=golden$V4,mainTitle='GOLDEN_Primary_Lesion_intersected',addMean=TRUE, meanPointShape=23, meanPointSize=3,
+      meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(golden$V4)))
+  
+d=ggplot2.violinplot(data=golden$V5,mainTitle='GOLDEN_Primary_Lesion_intersected',addMean=TRUE, meanPointShape=23, meanPointSize=3, meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(golden$V5)))+ geom_text(aes(1.4, .9, label=length(golden$V5)))
+grid.arrange(o,d,ncol=2,nrow=1)
+dev.off()
+
+
+summary(golden$V6)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.034   1.496   1.799   1.932   2.210   7.583 
+
+#golden_have been filtered appling a 3rd quartile threshold
+pdf(file="allelic_frequencies_intersect_positive_ratio in GOLDEN_most_changing primary_vs_Lesion.pdf",width=10, heigh=10)
+o=ggplot2.violinplot(data=golden_most$V4,mainTitle='GOLDEN_Primary_Lesion_intersected',addMean=TRUE, meanPointShape=23, meanPointSize=3,
+      meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(golden_most$V4)))+ geom_dotplot(binaxis='y',position="dodge", stackdir='centerwhole', stackratio = 1,dotsize=0.3,binwidth = 0.04) + geom_label_repel(aes(1,golden_most$V4, label = rownames(golden_most)),nudge_y = 0.01,nudge_x=0.2 ) 
+  
+  d=ggplot2.violinplot(data=golden_most$V5,mainTitle='GOLDEN_Primary_Lesion_intersected',addMean=TRUE, meanPointShape=23, meanPointSize=3, meanPointColor="black",ylim=c(0,1)) + geom_text(aes(1.4, .9, label=length(golden_most$V5)))+ geom_text(aes(1.4, .9, label=length(golden_most$V5)))+ geom_dotplot(binaxis='y', stackdir='centerwhole', stackratio = 1,dotsize=0.3,binwidth = 0.04) + geom_label_repel(aes(1,golden_most$V5, label = rownames(golden_most)),nudge_y = 0.01,nudge_x=0.2 )
+
+grid.arrange(o,d,ncol=2,nrow=1)
+dev.off()
+
+
+#probes_mapped_to_TAD_primary_metastatic
+
+pdf(file="GOLDEN_primary_lesion_in_CTCF_mutation.pdf",width=25, heigh=10)
+plot(k1$dist,main = "sample_GOLDEN_Primary_lesion_high_allele_frequency", xlab = "from chr1 to chrX", ylab = "Distance to CTCF binding site",pch=19, cex=.0, ylim=c(-6,6))
+text(k1$dist, labels=k1$due,cex=3,col=c("red"))
+dev.off()
+
+
+text(b1,labels=b1$due,cex=4,col=c("red"))
+text(b1,labels=b1[,5],cex=4,col=c("red"))
+plot(TAD_dist,main = "sample_020_Normal_vs_Metastatic_CTCF", xlab = "from chr1 to chrX", ylab = "Distance to CTCF binding site",pch=19, cex=.0, ylim=c(-6,6))
+
+
+text(TAD_dist,labels=TAD_c$V16,cex=4,col=c("red"))
+
+#New figure intersection
+

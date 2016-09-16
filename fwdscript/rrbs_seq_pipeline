@@ -1,0 +1,51 @@
+#analisi rrbs 
+#QC and Mapping
+ 
+#trim_galore utilizza cutadapt e fastqc, Ã¨ settato specificativamente per la rrbs seq fornendo anche l'opzione rrbs 
+trim_galore --rrbs --paired --fastqc /path/to/fastq_file1 /path/to/fastq_file2 -o /mnt/NFS_SHARE_3/Aversano_pomodoro/trimgalore/P150_1
+#-q  quality <INT> qualitÃ  della read fastq (dafault20)
+#--phred33 (default) oppure --phred64
+#-e <ERROR RATE> numero di errori diviso lunghezza della regione matched
+
+
+#trimmomatic
+java -jar /home/giacomo/Scrivania/Programs_methylseq/Trimmomatic-0.32/trimmomatic-0.32.jar SE -phred33 -trimlog trimlog /home/giacomo/RRBS_training/sra_data.fastq.gz /home/giacomo/Risultati_metseq/analisi24_03_Training/Campione_2/trimmato.fastq  LEADING:30 HEADCROP:6 TRAILING:30 SLIDINGWINDOW:4:15 MINLEN:16 ILLUMINACLIP:/home/giacomo/Risultati_metseq/analisi24_03_Training/Campione_2/adapter.fasta:2:40:15
+TrimmomaticSE: Started with arguments: -phred33 -trimlog trimlog /home/giacomo/RRBS_training/sra_data.fastq.gz /home/giacomo/Risultati_metseq/analisi24_03_Training/Campione_2/trimmato.fastq LEADING:30 HEADCROP:6 TRAILING:30 SLIDINGWINDOW:4:15 MINLEN:16 ILLUMINACLIP:/home/giacomo/Risultati_metseq/analisi24_03_Training/Campione_2/adapter.fasta:2:40:15
+
+#LEADING taglia le basi all'inizio della read con quality score minore 30
+#HEADCROP taglia 6 basi all'inizio della read
+#TRAILING taglia le basi al 3' della reads al di sotto di un cut off
+#SLIDINGWINDOw scan la read dal 5'primo e taglia al di sotto di un cut off
+#MINLEN taglia le read al di sotto di lunghezza n
+#ILLUMINACLIP:adapter.fa:2:40:15
+
+
+
+#lancio bismark ed allineo
+bismark --bowtie2 -N 2 --sam #niente per bam /path/to/Genomes/-1 Sample1_PE_R1_val_1.fq.gz -2 Sample1_PE_R2_val_2.fq.gz
+
+# sorting samtools BAM
+samtools sort test.bam test_sorted
+
+#methylation extractor
+$/path/to/bismark_methylation_extractor --bedGraph --gzip /path/to/file.sam/allineato 
+
+#creazione report
+$ path/to/bismark2report
+
+#visualizzazione report online
+$ firefox path/to/file_generato/da/bismark2report &
+
+
+
+
+
+
+
+
+
+
+
+
+
+

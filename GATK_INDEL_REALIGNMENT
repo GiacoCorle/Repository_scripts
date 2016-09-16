@@ -1,0 +1,26 @@
+
+count_1=0
+ for filenames in /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/*R1.fastq ;do 
+    filename2=${filenames##*/}				
+		 filename3=${filename2%.*}
+         filename4=${filename3%_*}
+
+let "count_1++"
+
+#realigner target creator
+echo "realigner target creator for ${filename4}"
+#java -jar GenomeAnalysisTK.jar -T RealignerTargetCreator -R /Users/giacomino/Genomes/GATK_bundle/ucsc.hg19.fasta -I /Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/sample_018_Normal_complete.bam -known /Users/giacomino/Genomes/GATK_bundle/Mills_and_1000G_gold_standard.indels.hg19.vcf -o /Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/REALIGNER_TARGET_CREATOR/sample_018_Normal_complete.txt
+
+
+#IndelRealigner
+echo "Indel realigner for ${filename4}"
+#java -jar GenomeAnalysisTK.jar -T IndelRealigner -R /Users/giacomino/Genomes/hg19/BWA/ucsc.hg19.fasta -I /Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/sample_018_Normal_complete.bam -known /Users/giacomino/Genomes/GATK_bundle/Mills_and_1000G_gold_standard.indels.hg19.vcf -targetIntervals /Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/REALIGNER_TARGET_CREATOR/sample_018_Normal_complete.txt -o /Volumes/SAM_BAM/TARGETED_seq_26012016/sample_ready_to_be_analysed/INDEL_REALIGNED/ind_real_sample_018_Normal_complete.bam
+
+done
+
+
+
+
+
+
+

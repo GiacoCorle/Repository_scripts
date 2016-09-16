@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#cat /home/genomi/Desktop/SCRIPT/file_new.txt | read line ; do  #leggo  nella cartella dei file giÃ  analizzati
+
+#filename1="${filename##*/}" #tolgo il path
+
+	#for filenames in /mnt/NFS_SHARE_3/Cell_lines3/*.rnaseq.fastq.gz;do #leggo nella cartella con i file non ancora analizzati
+	#filename2="${filenames##*/_}"
+	#filename3="${filename2#*_}"
+	#filename4="${filename3%_*}"
+	#filename5="${filename4%_*}"
+		
+		#if [ "$filename1" == "$filename5" ]; then
+		#echo $filename5		
+		#cp   $filenames /mnt/NFS_SHARE_3/rigettati/		#sposta i file giÃ  analizzati presenti nella cartella  nella cartella rigettati
+		#echo "copio $filenames"		
+		#rm $filenames
+		#echo "rimuovo $filenames"
+		#fi
+	#done
+#	echo $line
+#done
+
+#awk -F. '{print $1}' /mnt/NFS_SHARE_3/new_download/filelist.txt > file_new.txt
+
+filename='/home/genomi/Desktop/SCRIPT/no_index.txt'
+filelines=`cat $filename`
+for line in $filelines ; do
+	for files in /mnt/NFS_SHARE_1/Breast_Cancer_public_dataset/OUTPUT_TOPHAT2/* ;do
+		
+		
+		if [ "$line" == "$files" ]; then
+				
+			
+		echo "trovato $files previous dowload"		
+		sed  -i /$line/d $filename 
+		echo "rimuovo $filelines" 
+		fi
+
+	
+done
+
+done

@@ -1,0 +1,53 @@
+
+
+#sorting samtools SAM
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/PM11912_AGTCAA_L001/BISMARK/PM11912_AGTCAA_L001_R1_001.fastq.gz_bismark.sam.gz -o  /mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/PM11912_AGTCAA_L001/BISMARK/order.sam
+
+
+# sorting samtools BAM
+samtools sort test.bam test_sorted
+
+#genero il file da usare per methykit. Si tratta di un file .txt 
+awk  '{OFS="\t";if($4+0 > 0 || $5+0 >0 ) print $1,$2,$3,$4/($4+$5),$4+$5;}' cytosineReport.txt > outputForMethylKit
+
+
+
+#in R
+
+library(methylKit)
+
+setwd("/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/Analisi_methylkit_21042015/")
+
+#my.methRaw=read.bismark( location=,sample.id="test1",assembly="hg18",read.context="CpG",save.folder=getwd())
+
+file.list=list(
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/P601_S3_L001/ordinatissimo.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/P603_S5_L001/BISMARK/order.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/PM3_S2_L001/BISMARK/order.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/PM1_S1_L001/BISMARK/order.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/P1503_S7/BISMARK/order.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/P1502_S6_L001/BISMARK/order.sam",
+"/mnt/NFS_SHARE_1/Pomodoro/Pomodoro_analisi/P602_S4_L001/BISMARK/order.sam")
+
+file.sample=list("P601_S3","P603_S5", "PM3_S2_L001","PM1_S1", "P1503_S7", "P1502_S6", "P602_S4")
+
+treatment=c(1,1,1,0,0,0,0)
+
+obj=read.bismark(location=file.list,sample.id=file.sample,assembly="tomato ",save.folder=getwd(),save.context=c("CpG","CHG","CHH",read.context="CpG"),treatment=treatment))
+
+save(obj, file="path/to/saved/object.rda")
+
+
+
+filtered.myobj=filterByCoverage(obj,lo.count=10,lo.perc=NULL, hi.count=NULL,hi.perc=99.9)
+
+normalized_obj=normalizeCoverage(filtered.myobj)
+
+meth=unite(normalized_obj, destrand=FALSE)
+
+clusterSamples(meth, dist="euclidean", method="complete", plot=TRUE)
+
+tiles=tileMethylCounts(filtered.myobj,win.size=30000,step.size=30000)
+
+getMethylationStats(myobj[[2]],plot=T,both.strands=F)
+

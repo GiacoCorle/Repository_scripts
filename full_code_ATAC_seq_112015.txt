@@ -1,0 +1,153 @@
+                                                                                                #ATAC-seq analysis workflow
+
+
+
+#Align MCF7 CD44+ and MCF CD44- replicates fastq and then convert from .sam to .bam, sort and index (bash)
+
+for filenames in /ATAC_seq/fastq/*.fastq ;do 		
+        filename2=${filenames##*/}				
+		filename3=${filename2%.*}
+		echo $filename3		
+		echo “Bowtie is working…..”
+		echo “It’s aligning ${filename3}”
+			
+		bowtie -q -t --sam -p 8  /hg19/BowtieIndex/hg19 $filenames /ATAC_seq/Alignment/$filename3.sam >>/ATAC_seq/Alignment/$filename3.log 2>&1   
+		
+		samtools view -b -S /Users/Giacomino/Desktop/ATAC_seq/Alignment/$filename3.sam > /Users/Giacomino/Desktop/ATAC_seq/Alignment/$filename3.bam 
+		samtools sort -T /tmp/$filename3.sorted -o /Users/Giacomino/Desktop/ATAC_seq/Alignment/sorted_$filename3.bam /Users/Giacomino/Desktop/ATAC_seq/Alignment/$filename3.bam
+		samtools index /Users/Giacomino/Desktop/ATAC_seq/Alignment/sorted_$filename3.bam
+done
+#we have created six sorted_*.bam files: MCF7_HIGH_1 ,MCF7_HIGH_2 ,MCF7_HIGH_3 ,MCF7_LOW_1 ,MCF7_LOW_2 ,MCF7_LOW_3
+  
+
+#concatenate samples(bash)
+
+#concatenate replicates MCF7 CD44+ in one concatenated MCF7 CD44+ (concatenated_MCF7_HIGH)
+samtools cat -o /ATAC_seq/Alignment/concatenated_MCF7_HIGH.bam /ATAC_seq/Alignment/MCF7_HIGH_1.bam /ATAC_seq/Alignment/MCF7_HIGH_2.bam /ATAC_seq/MCF7_HIGH_3.bam
+samtools sort -T /tmp/filename3.sorted -o /ATAC_seq/Alignment/sorted_concatenated_MCF7_HIGH.bam /ATAC_seq/Alignment/concatenated_MCF7_HIGH.bam
+samtools index /ATAC_seq/Alignment/sorted_concatenated_MCF7_HIGH.bam
+
+#concatenate replicates MCF7 CD44- in one concatenated MCF7 CD44- (concatenated_MCF7_LOW)
+samtools cat -o /ATAC_seq/Alignment/concatenated_MCF7_LOW.bam /ATAC_seq/Alignment/MCF7_LOW_1.bam /ATAC_seq/Alignment/MCF7_LOW_2.bam /ATAC_seq/Alignment/MCF7_LOW_3.bam
+samtools sort -T /tmp/filename3.sorted -o /ATAC_seq/Alignment/sorted_concatenated_MCF7_LOW.bam /ATAC_seq/Alignment/concatenated_MCF7_LOW.bam
+samtools index /ATAC_seq/Alignment/sorted_concatenated_MCF7_LOW.bam
+
+
+
+
+#Peaks calling with MACS2 (bash)
+
+#peak calling MCF7_HIGH
+macs2 callpeak -t /ATAC_seq/Alignment/sorted_concatenated_MCF7_HIGH.bam --format AUTO --nomodel --shift -100 --extsize 200 -B --SPMR --call-summits -q 0.01 -g hs --outdir /ATAC_seq/MACS/ -n CONCATENATE_MCF7_HIGH
+
+#peak calling MCF7_LOW
+macs2 callpeak -t /ATAC_seq/Alignment/sorted_concatenated_MCF7_LOW.bam --format AUTO --nomodel --shift -100 --extsize 200 -B --SPMR --call-summits -q 0.01 -g hs --outdir  /ATAC_seq/MACS/ -n CONCATENATE_MCF7_LOW 
+
+
+
+#Set the .csv file used as input to MMDiff. It's important just the first and third line. Second and fourth should be filled with whatever bam different from first and second.
+
+SampleID,Tissue,Factor,Condition,Replicate,bamReads,bamControl,Peaks,PeakCaller
+MCF7_HIGH,C,ATAC,1,1,/ATAC_seq/Alignment/sorted_concatenated_MCF7_HIGH.bam,/ATAC_seq/Alignment/input.bam,/ATAC_seq/MACS/CONCATENATE_MCF7_HIGH_peaks.xls,macs
+MCF7_HIGH1,C,ATAC,1,2,/ATAC_seq/Alignment/"whatever".bam,/ATAC_seq/Alignment/input.bam,/ATAC_seq/MACS/"whatever"_peaks.xls,macs
+MCF7_LOW,T,ATAC,2,1,/ATAC_seq/Alignment/sorted_concatenated_MCF7_LOW.bam,ATAC_seq/Alignment/input.bam,/ATAC_seq/MACS/CONCATENATE_MCF7_LOW_peaks.xls,macs
+MCF7_LOW1,T,ATAC,2,2,/ATAC_seq/Alignment/"whatever".bam,/ATAC_seq/Alignment/input.bam,//ATAC_seq/MACS/"whatever"_peaks.xls,macs
+
+
+
+
+#MMDiff (R)
+
+#create the object and set the peak overlap between at least in 2 groups
+library('MMDiff')
+MCF7<- dba(sampleSheet="path_to_the_input_csv_file",minOverlap=2)
+Peaks <- dba.peakset(MCF7,bRetrieve=TRUE)
+MCF7Profiles <- getPeakProfiles(MCF7, Peaks,draw.on=FALSE, bin.length=30,save.files=FALSE, keep.extra=FALSE, use.old=FALSE)
+PeakRawHists <- MCF7Profiles$MD$PeakRawHists
+# Call GMD scores
+MCF7Dists <- compHistDists(MCF7Profiles, method= 'GMD',overWrite=FALSE, NormMethod=NULL, verbose=3, run.parallel = TRUE)
+#Select the score between samples you are interested for and form the dataframe properly and export in a TAB formatted table
+dist=as.data.frame(MCF7Dists$MD$DISTS$GMD)
+a=rownames(dist)
+data_frame=cbind(a,dist)
+row.names(data_frame) <- NULL
+dist_LOW1_HIGH1=data_frame
+write.table(dist_LOW1_HIGH1,file="dist_concatenate_LOW_HIGH.txt",dec=".", sep="\t")
+
+
+
+#Run ODIN, qvalue 0.001, hg19 fasta and chromosome size (bash)
+python ODIN.py -p 0.001 -v --output-dir=/ATAC_seq/ODIN/ /ATAC_seq/Alignment/sorted_concatenated_MCF7_HIGH.bam /ATAC_seq/Alignment/sorted_concatenated_MCF7_LOW.bam /Genomes/hg19/hg19_fasta/hg19_total_genome.fa /Desktop/chromInfo.txt
+
+#merge MMDiff and ODIN output coordinates (bash)
+bedtools intersect -wb -a /MMDiff/dist_concatenate_LOW_HIGH.txt -b /ATAC_seq/ODIN/ODIN_output.txt  > /ATAC_seq/MMMDIFF_ODIN/MMdiff_odin_intersect.txt
+
+
+#at this point we keep the coordinate of the common peaks and select the GMD and qvalue scores filtered by a threshold
+
+
+#raw bam duplicates removal of sorted_*.bam (bash)
+
+#example for MCF7_HIGH1
+#deduplication
+java -jar picard.jar  MarkDuplicates REMOVE_DUPLICATES=true I=/ATAC_seq/Alignment/sorted_MCF7_HIGH_1.bam O=/ATAC_seq/Alignment/deduplicated_MCF7_HIGH_1.bam M=/ATAC_seq/Alignment/deduplicated_sorted_MCF7_HIGH_1.bam
+samtools sort -T /tmp/filename.sorted -o /ATAC_seq/Alignment/deduplicated_sorted_MCF7_HIGH_1.bam /ATAC_seq/Alignment/deduplicated_MCF7_HIGH_1.bam
+samtools index /ATAC_seq/Alignment/deduplicated_sorted_MCF7_HIGH_1.bam
+
+
+#read counting of each single deduplicated bam to the selected genomic coordinates
+bedtools multicov -bams /path_to_each_deduplicated.bam > /ATAC_seq/read_count_coord_intersect_MCF7_HIGH_vs_MCF7_LOW.txt
+
+
+#we, then, apply the normalization formula and export the data in a matrix in order to create a heatmap (R)
+library(RColorBrewer)
+library(gplots)
+library(matrixStats)
+tab=read.table("/ATAC_seq/read_count_coord_intersect_MCF7_HIGH_vs_MCF7_LOW.txt", sep="\t", dec=".")
+a = tab
+a = (a - rowMeans(a))
+colors = c(seq(-10,-0.01,length=200),seq(0.01,10,length=200))
+my_palette <- colorRampPalette(c("brown4","firebrick","indianred1","seashell","lightcyan","lightcyan1","lightskyblue1","lightskyblue1","steelblue3"))
+hr <- hclust(as.dist(1-cor(t(a), method="pearson")), method="complete")
+hc <- hclust(as.dist(1-cor(a, method="pearson")), method="complete") 
+mycl <- cutree(hr, h=max(hr$height)/1.5); 
+mycol <- sample(rainbow(256)); 
+mycol <- mycol[as.vector(mycl)];
+group = as.vector(c(rep("blue",2),rep("red",2)))
+jpeg("heatmap.jpg",width=10,height=10, units= "in", res=300)
+heatmap.2(as.matrix(a),Rowv=as.dendrogram(hr), Colv=as.dendrogram(hc),labRow=FALSE,ColSideColors=group,col=my_palette,breaks=colors, density.info="none", trace="none",symm=F,symkey=F,symbreaks=T, scale="none",margin=c(10,10), keysize=2)
+dev.off()
+
+#Trascription factor motif analysis
+#We merged read_count_coord_intersect_MCF7_HIGH_vs_MCF7_LOW.txt coordinates with MCF7_HIGH_1_trat_pileup. Then, We extended the region to +- 10 bp
+#Homer findMotifGenome.pl was used to enrich those regions
+findMotifsGenome.pl /ATAC_seq/21bp_treatpileup.txt /Genomes/hg19/hg19_fasta/ /ATAC_seq/HOMER/ -size given -mask -preparse
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

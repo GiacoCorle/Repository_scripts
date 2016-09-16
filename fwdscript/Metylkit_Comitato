@@ -1,0 +1,16 @@
+
+
+
+
+
+
+
+library(methylKit)
+setwd("/mnt/NFS_SHARE_3/Comitato_project/")
+file.list=list(
+"/mnt/NFS_SHARE_3/Comitato_project/Sample_F1/Sample_F1_aligned.sam",
+"/mnt/NFS_SHARE_3/Comitato_project/Sample_F1/Sample_F2_aligned.sam")
+file.sample=list("Sample_F1","Sample_F2")
+treatment=c(1,0)
+obj=read.bismark(location=file.list,sample.id=file.sample,assembly="human",save.folder=getwd(),save.context=c("CpG","CHG","CHH",read.context="CpG"),treatment=treatment)
+

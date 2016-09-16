@@ -1,0 +1,23 @@
+
+
+./bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/Homo_sapiens/Ensembl/GRCh37/Sequence/Chromosomes/  /mnt/NFS_SHARE_3/Nassa_25072015/Sample1_R1_trimmed.fastq  -o /mnt/NFS_SHARE_3/Nassa_25072015/Sample1_trimmed_single_read_read1.fastq --temp_dir /mnt/NFS_SHARE_2/
+
+
+./bismark_methylation_extractor -s --multicore 16 --bedGraph --cytosine_report -o /mnt/NFS_SHARE_3/Nassa_25072015/ /mnt/NFS_SHARE_3/Nassa_25072015/Sample1_trimmed_single_read_read1.fastq/Sample1_R1_trimmed.fastq_bismark_bt2.bam 
+
+#nel frattempo converto bam di bismark in sam per passarlo a  metilkit
+
+#preparo il file per methylkit
+samtools view -h -o /mnt/NFS_SHARE_3/Nassa_25072015/Sample_1_trimmed_aligned.bam/SampleR1.sam /mnt/NFS_SHARE_3/Nassa_25072015/Sample_1_trimmed_aligned.bam/Sample1_R1_trimmed.fastq_bismark_bt2_pe.bam
+
+library(methylKit)
+setwd(""/mnt/NFS_SHARE_3/Nassa_25072015/Sample1_trimmed_single_read_read1"")
+file.list=list("/mnt/NFS_SHARE_3/Nassa_25072015/Sample1_trimmed_single_read_read1/Sample1_CpG.txt")
+file.sample=list("Sample_F1")
+treatment=c(1)
+
+obj=read(file.list,sample.id=file.sample,assembly="hg19",context="CpG",treatment=treatment)
+getMethylationStats(obj[[1]],plot=T,both.strands=T)
+filtered.obj=filterByCoverage(obj,lo.count=10,lo.perc=NULL, hi.count=NULL,hi.perc=99.9)
+tiles=tileMethylCounts(filtered.obj,win.size=500,step.size=500)
+

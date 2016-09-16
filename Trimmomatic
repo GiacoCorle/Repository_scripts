@@ -1,0 +1,1 @@
+python ROSE_main.py -g hg19 -i /Volumes/SAM_BAM/MACS2_DKP_april_h3k27ac/sorted_G_DKP_016_INPUT_sorted_G_DKP_016_H3K27ac_peaks.narrowPeak.bed -r /Volumes/SAMSUNG_D3/H3K27ac_ChIP_Tumour/BAM-MACS2/BAM_Sorted_Indexed/G_DKP_016_H3K27ac_sort.BAM -o /Users/giacomino/analysis/prova_ROSE/ -c /Volumes/SAMSUNG_D3/H3K27ac_ChIP_Tumour/BAM-MACS2/BAM_Sorted_Indexed/G_DKP_016_INPUT_sorted.BAM

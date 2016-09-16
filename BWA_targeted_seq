@@ -1,0 +1,32 @@
+#merging our targeted sample using picard
+
+cat `find /Volumes/FASTQ/ -name "*ATGCCTAA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/GOLDEN_blood_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*ATGCCTAA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/GOLDEN_blood_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GAATCTGA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_034_Primary_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GAATCTGA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_034_Primary_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*AACGTGAT*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Primary_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*AACGTGAT*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Primary_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*CACTTCGA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Normal_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*CACTTCGA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Normal_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GCCAAGAC*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Normal_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GCCAAGAC*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Normal_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GACTAGTA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Primary_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GACTAGTA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Primary_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*ATTGGCTC*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_034_Normal_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*ATTGGCTC*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_034_Normal_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GATGAATC*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Normal_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GATGAATC*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Normal_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*AGCAGGAA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Metastatic_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*AGCAGGAA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Metastatic_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GAGCTGAA*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Metastatic_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GAGCTGAA*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_018_Metastatic_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*AAACATCG*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Metastatic_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*AAACATCG*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_026_Metastatic_R2.fastq
+cat `find /Volumes/FASTQ/ -name "*GAGTTAGC*R1*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Primary_R1.fastq
+cat `find /Volumes/FASTQ/ -name "*GAGTTAGC*R2*.fastq"` > /Volumes/GIACO/TARGETED_SEQ_FASTQ_concatenated/sample_020_Primary_R2.fastq
+
+
+
+bwa mem -t 4 -M -T 30 -p /Volumes/FASTQ/TARGETED/TARGETED_SEQ_26012016/IGF0004631/160108_SN172_0512_BC8CNYACXX_ATGCCTAA_L001_R1_001.fastq 
+
+rsync -a -P rsync://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeOpenChromDnase/*1.bam /Volumes/GIACO/Encode_DHS_sites_DUKE/

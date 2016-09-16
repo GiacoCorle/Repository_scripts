@@ -1,0 +1,117 @@
+
+#lancio trimgalore (non lanciato poichÃ¨ il trimming richiede tempo)
+
+/usr/local/bin/trim_galore_zip/trim_galore --paired --fastqc /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L005_R1_001.fastq.gz /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L005_R2_001.fastq.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/trimgalore/P150_1/
+
+
+
+
+
+#lancio bismark all lanes
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_1/P60_1_GCCAAT_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_1/P60_1_GCCAAT_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_1/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L005_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_1/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_2/P150_2_ACTTGA_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_1/P150_2_ACTTGA_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_2/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_3/P150_3_GATCAG_L006_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P150_3/P150_3_GATCAG_L006_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_3/; 
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_2/P60_2_CAGATC_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_2/P60_2_CAGATC_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_2/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_3/P60_3_CTTGTA_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_P60_3/P60_3_CTTGTA_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_3/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_PM1/PM1_ATCACG_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/PM1_ATCACG_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM1/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_PM2/PM2_TTAGGC_L005_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_PM2/PM2_TTAGGC_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM2/;
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 3 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/ -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_PM3/PM3_ACAGTG_L005_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano/Project_Aversano/Sample_PM3/PM3_ACAGTG_L005_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM3/
+
+
+
+
+#lancio bismark solo lane1 tramite 2 terminali con 4 threads per ciascuno
+
+#terminale 1
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L001_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_1/P150_1_TGACCA_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_1/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_2/P150_2_ACTTGA_L001_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_2/P150_2_ACTTGA_L001_R2_001.fastq.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_2/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_3/P150_3_GATCAG_L001_R1_001.fastq.gz  -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P150_3/P150_3_GATCAG_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_3/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_PM2/PM2_TTAGGC_L001_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_PM2/PM2_TTAGGC_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM2/
+
+
+
+
+
+#terminale2
+/usr/local/bin/bismark_v0.14.2/bismark   -p 4 -n 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_1/P60_1_GCCAAT_L001_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_1/ P60_1_GCCAAT_L001_R2_001.fastq.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_1/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_2/P60_2_CAGATC_L001_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_1/P60_2_CAGATC_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_2/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_3/P60_3_CTTGTA_L001_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_P60_3/P60_3_CTTGTA_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_3/ ;
+
+/usr/local/bin/bismark_v0.14.2/bismark --bowtie2  -p 4 -N 1 /mnt/NFS_SHARE_1/Genomes/TOMATO/  -1 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_PM3/PM3_ACAGTG_L001_R1_001.fastq.gz -2 /mnt/NFS_SHARE_1/Demultiplexing/Run_20042015_HiSeq/1_Demultiplexing_1mm_PF_Aversano_Lane1/Project_Aversano/Sample_PM3/PM3_ACAGTG_L001_R2_001.fastq.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM3/
+
+
+
+
+#sam tool sorting -O serve per impostare l'output in sam, -T serve a scrivere un file temporaneo in bam chiamato order
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_1/P150_1_TGACCA_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_1/ordered.sam ; 
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_2/P150_2_ACTTGA_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_2/ordered.sam ;
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P150_3/P150_3_GATCAG_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_3/ordered.sam ;
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM2/PM2_TTAGGC_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/PM2/ordered.sam ;
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/PM3/PM3_ACAGTG_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/PM3/ordered.sam ;
+/usr/local/bin/samtools-1.2/samtools sort -O 'sam' -T order /mnt/NFS_SHARE_3/Aversano_pomodoro/bismark/P60_3/P60_3_CTTGTA_L001_R1_001.fastq.gz_bismark_bt2_pe.sam.gz  -o /mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P60_3/ordered.sam
+
+
+#MethylKit
+library("methylKit")
+
+setwd("/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/")
+
+file.list=list(
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P60_1/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P60_2/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P60_3/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/PM3/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_1/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_2/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/P150_3/ordered.sam", 
+"/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/PM2/ordered.sam" 
+)
+
+file.sample=list("P60_1","P60_2","P60_3","PM3","P150_1","P150_2","P150_3","PM2")
+
+treatment=c(1,1,1,2,0,0,0,2)
+
+obj=read.bismark(location=file.list,sample.id=file.sample,assembly="tomato ",save.folder=getwd(),save.context=c("CpG"),read.context=("CpG"),treatment=treatment)
+
+save(obj, file="/mnt/NFS_SHARE_3/Aversano_pomodoro/methylkit/"data_tomato_lane1.r")
+
+filtered.myobj=filterByCoverage(obj,lo.count=10,lo.perc=NULL, hi.count=NULL,hi.perc=99.9)
+
+normalized_obj=normalizeCoverage(filtered.myobj)
+
+meth=unite(normalized_obj, destrand=FALSE)
+
+pdf(file = "tomato_correlations.pdf")
+getCorrelation(meth,plot=T)
+dev.off()
+
+
+pdf(file = "tomato_cluster_single_cpg_unite.pdf")
+clusterSamples(meth, dist="euclidean", method="complete", plot=TRUE)
+dev.off()
+
+
+
+pdf(file = "tomato_cluster_single_cpg_PCA.pdf")
+PCASamples(meth)
+dev.off()
+
+#tiles=tileMethylCounts(filtered.myobj,win.size=1000,step.size=1000)
+
+
+
+
+
+
+
+
+
+
+

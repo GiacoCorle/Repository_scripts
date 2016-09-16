@@ -1,0 +1,22 @@
+#pTable = read.table("/Users/local_admin/Desktop/Analisi_Guida_All_2013/piRNA/73_piRNA.txt",header=TRUE,row.names=1)
+TempRow = 1
+N = as.numeric(pTable[TempRow,1:10])
+I = as.numeric(pTable[TempRow,11:16])
+T = as.numeric(pTable[TempRow,17:26])
+boxplot(N,I,T,col=c("orange","grey","red"),names=c("N","H","T"),xlab=row.names(pTable[TempRow,]),ylab="piRNA expression")
+
+T_N = as.numeric(hm5[1:6,2])
+T_H = as.numeric(hm5[1:6,3])
+H_N = as.numeric(hm5[1:6,1])
+T_N_2 = as.numeric(hm5[7:17,2])
+T_H_2 = as.numeric(hm5[7:17,3])
+H_N_2 = as.numeric(hm5[7:17,1])
+T_N_3 = as.numeric(hm3[177:187,2])
+T_H_3 = as.numeric(hm3[177:187,3])
+H_N_3 = as.numeric(hm3[177:187,1])
+T_N_4 = as.numeric(hm3[188:219,2])
+T_H_4 = as.numeric(hm3[188:219,3])
+H_N_4 = as.numeric(hm3[188:219,1])
+
+boxplot(H_N,T_N,T_H,H_N_2,T_N_2,T_H_2,col=c("steelblue1","steelblue","grey"),names=c("FC_H_N","FC_T_N","FC_T_H","FC_H_N","FC_T_N","FC_T_H"))
+abline(h=0,col="black",lty = "dotted")

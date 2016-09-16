@@ -1,0 +1,52 @@
+library(methylKit)
+setwd("/mnt/NFS_SHARE_1/Methylation_Nassa_07072015/")
+file.list=list(
+"/home/genomi/Desktop/methylation_Nassa/DMSO.sorted.sam",
+"/home/genomi/Desktop/methylation_Nassa/EPZ.sorted.sam")
+
+file.sample=list("DMSO","EPZ")
+
+treatment=c(1,0)
+
+obj=read.bismark(location=file.list,sample.id=file.sample,assembly="hg19",save.folder=getwd(),save.context=c("CpG","CHG","CHH",read.context="CpG",treatment=treatment))
+
+
+filtered.myobj=filterByCoverage(obj,lo.count=10,lo.perc=NULL, hi.count=NULL,hi.perc=99.9)
+
+normalized_obj=normalizeCoverage(filtered.myobj)
+
+meth=unite(normalized_obj, destrand=FALSE)
+
+clusterSamples(meth, dist="euclidean", method="complete", plot=TRUE)
+
+tiles=tileMethylCounts(filtered.myobj,win.size=30000,step.size=30000)
+
+getMethylationStats(myobj[[2]],plot=T,both.strands=F)
+getMethylationStats(myobj[[1]],plot=T,both.strands=F)
+
+
+
+
+
+library("graphics")
+getCoverageStats(myobj[[2]],plot=T,both.strands=F)
+getCoverageStats(myobj[[1]],plot=T,both.strands=F)
+
+getCorrelation(meth,plot=T)
+PCASamples(meth,screeplot=TRUE)
+
+myDiff <-calculateDiffMeth(meth)
+myDiff25p <-get.methylDiff(myDiff,difference=25,qvalue=0.01)
+
+
+diffMethPerChr(myDiff,plot=TRUE,qvalue.cutoff=0.01,meth.cutoff=25)
+
+promoters <-regionCounts(obj, gene.obj$promoters)
+
+perc.meth <-percMethylation(meth)
+
+
+
+
+
+
